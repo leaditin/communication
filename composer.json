@@ -1,0 +1,31 @@
+{
+    "name": "leaditin/communication",
+    "description": "Communication service for sending various communications.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "communication", "notification", "email", "leaditin"
+    ],
+    "authors": [
+        {
+            "name": "Igor Vuckovic",
+            "email": "igor@vuckovic.biz"
+        }
+    ],
+    "require": {
+        "php": "^8.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Leaditin\\Communication\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Leaditin\\Communication\\": "tests/"
+        }
+    }
+}
