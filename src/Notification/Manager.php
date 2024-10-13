@@ -13,7 +13,7 @@ class Manager
     /** @var Message[][] */
     protected array $messages = [];
 
-    public function createMessage(string $message, ?string $field, string $type): Message
+    public function createMessage(string $message, string $type, null|string $field = null): Message
     {
         $msg = match ($type) {
             Message::INFO => Message::info($message, $field),

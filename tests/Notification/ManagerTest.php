@@ -15,7 +15,7 @@ final class ManagerTest extends TestCase
     public function testCreateInfoMessageCorrectly(): void
     {
         $manager = new Manager();
-        $message = $manager->createMessage('Information message', 'field1', Message::INFO);
+        $message = $manager->createMessage('Information message', Message::INFO, 'field1');
         $this->assertEquals('info', $message->type);
         $this->assertEquals('Information message', $message->message);
         $this->assertEquals('field1', $message->field);
@@ -25,7 +25,7 @@ final class ManagerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $manager = new Manager();
-        $manager->createMessage('Invalid message', 'field1', 'invalid_type');
+        $manager->createMessage('Invalid message', 'invalid_type');
     }
 
     public function testAppendMessageStoresMessageCorrectly(): void
