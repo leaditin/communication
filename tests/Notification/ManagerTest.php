@@ -5,34 +5,17 @@ namespace Tests\Leaditin\Communication\Notification;
 use Leaditin\Communication\Notification\Manager;
 use Leaditin\Communication\Notification\Message;
 use PHPUnit\Framework\TestCase;
-use InvalidArgumentException;
 
 /**
  * @covers \Leaditin\Communication\Notification\Manager
  */
 final class ManagerTest extends TestCase
 {
-    public function testCreateInfoMessageCorrectly(): void
-    {
-        $manager = new Manager();
-        $message = $manager->createMessage('Information message', Message::INFO, 'field1');
-        $this->assertEquals('info', $message->type);
-        $this->assertEquals('Information message', $message->message);
-        $this->assertEquals('field1', $message->field);
-    }
-
-    public function testCreateMessageWithInvalidTypeThrowsException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $manager = new Manager();
-        $manager->createMessage('Invalid message', 'invalid_type');
-    }
-
-    public function testAppendMessageStoresMessageCorrectly(): void
+    public function testAddMessageStoresMessageCorrectly(): void
     {
         $manager = new Manager();
         $message = Message::info('Information message', 'field1');
-        $manager->appendMessage($message);
+        $manager->addMessage($message);
         $this->assertTrue($manager->hasMessages(Message::INFO));
     }
 
@@ -41,8 +24,8 @@ final class ManagerTest extends TestCase
         $manager = new Manager();
         $message1 = Message::info('Information message', 'field1');
         $message2 = Message::success('Success message', 'field2');
-        $manager->appendMessage($message1);
-        $manager->appendMessage($message2);
+        $manager->addMessage($message1);
+        $manager->addMessage($message2);
         $messages = $manager->getMessages();
         $this->assertCount(2, $messages);
     }
@@ -52,8 +35,8 @@ final class ManagerTest extends TestCase
         $manager = new Manager();
         $message1 = Message::info('Information message', 'field1');
         $message2 = Message::success('Success message', 'field2');
-        $manager->appendMessage($message1);
-        $manager->appendMessage($message2);
+        $manager->addMessage($message1);
+        $manager->addMessage($message2);
         $messages = $manager->getMessages(Message::INFO);
         $this->assertCount(1, $messages);
         $this->assertEquals('info', $messages[0]->type);
@@ -63,7 +46,7 @@ final class ManagerTest extends TestCase
     {
         $manager = new Manager();
         $message = Message::info('Information message', 'field1');
-        $manager->appendMessage($message);
+        $manager->addMessage($message);
         $array = $manager->toArray();
         $expectedArray = [
             [
@@ -79,8 +62,36 @@ final class ManagerTest extends TestCase
     {
         $manager = new Manager();
         $message = Message::info('Information message', 'field1');
-        $manager->appendMessage($message);
+        $manager->addMessage($message);
         $manager->clear();
         $this->assertFalse($manager->hasMessages(Message::INFO));
+    }
+
+    public function testAddInfoMessageCorrectly(): void
+    {
+        $manager = new Manager();
+        $manager->addInfo('Information message', 'field1');
+        $this->assertTrue($manager->hasMessages(Message::INFO));
+    }
+
+    public function testAddSuccessMessageCorrectly(): void
+    {
+        $manager = new Manager();
+        $manager->addSuccess('Success message', 'field2');
+        $this->assertTrue($manager->hasMessages(Message::SUCCESS));
+    }
+
+    public function testAddWarningMessageCorrectly(): void
+    {
+        $manager = new Manager();
+        $manager->addWarning('Warning message', 'field3');
+        $this->assertTrue($manager->hasMessages(Message::WARNING));
+    }
+
+    public function testAddDangerMessageCorrectly(): void
+    {
+        $manager = new Manager();
+        $manager->addDanger('Danger message', 'field4');
+        $this->assertTrue($manager->hasMessages(Message::DANGER));
     }
 }

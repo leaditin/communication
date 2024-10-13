@@ -13,22 +13,27 @@ class Manager
     /** @var Message[][] */
     protected array $messages = [];
 
-    public function createMessage(string $message, string $type, null|string $field = null): Message
+    public function addInfo(string $message, null|string $field = null): static
     {
-        $msg = match ($type) {
-            Message::INFO => Message::info($message, $field),
-            Message::SUCCESS => Message::success($message, $field),
-            Message::WARNING => Message::warning($message, $field),
-            Message::DANGER => Message::danger($message, $field),
-            default => throw new InvalidArgumentException('Invalid message type'),
-        };
-
-        $this->appendMessage($msg);
-
-        return $msg;
+        return $this->addMessage(Message::info($message, $field));
     }
 
-    public function appendMessage(Message $message): Manager
+    public function addSuccess(string $message, null|string $field = null): static
+    {
+        return $this->addMessage(Message::success($message, $field));
+    }
+
+    public function addWarning(string $message, null|string $field = null): static
+    {
+        return $this->addMessage(Message::warning($message, $field));
+    }
+
+    public function addDanger(string $message, null|string $field = null): static
+    {
+        return $this->addMessage(Message::danger($message, $field));
+    }
+
+    public function addMessage(Message $message): static
     {
         $this->messages[$message->type][] = $message;
 
